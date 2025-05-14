@@ -1,9 +1,12 @@
 import React from 'react'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const LoadingNewIssuePage = () => {
     return (
         <div>
-            Loading...
+            <Skeleton />
+            <Skeleton height={"20rem"} />
         </div>
     )
 }

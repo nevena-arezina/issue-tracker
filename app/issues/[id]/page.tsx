@@ -1,6 +1,6 @@
 import StatusBadge from '@/app/components/StatusBadge'
 import { prisma } from '@/prisma/client'
-import { Card, Heading } from '@radix-ui/themes'
+import { Card, Heading, Text } from '@radix-ui/themes'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -22,7 +22,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
 
             <div className='flex gap-5 my-2'>
                 <StatusBadge status={issue.status} />
-                <p>{issue.createdAt.toDateString()}</p>
+                <Text>{issue.createdAt.toDateString()}</Text>
             </div>
 
             <Card className='prose max-w-xl' mt="5">
