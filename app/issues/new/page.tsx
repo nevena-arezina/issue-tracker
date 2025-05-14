@@ -20,11 +20,18 @@ const NewIssuePage = () => {
 
     const router = useRouter()
     const { register, control, handleSubmit, formState: { errors } } = useForm<IssueForm>({
-        resolver: zodResolver(createIssueSchema),
-        defaultValues: {
-            title: "",
-            description: "",
-        },
+        resolver: zodResolver(createIssueSchema)
+    })
+
+    const onSubmit = handleSubmit(async (data) => {
+        try {
+            setIsSubmitting(true)
+            await axios.post("/api/issues", data)
+            router.push("/issues")
+        } catch (error: any) {
+            setIsSubmitting(false)
+            setError(error.message)
+        }
     })
 
     return (
@@ -37,19 +44,7 @@ const NewIssuePage = () => {
                 </Callout.Root>
 
             )}
-            <form
-                className='space-y-4'
-                onSubmit={handleSubmit(async (data) => {
-                    try {
-                        setIsSubmitting(true)
-                        await axios.post("/api/issues", data)
-                        router.push("/issues")
-                    } catch (error: any) {
-                        setIsSubmitting(false)
-                        setError(error.message)
-                    }
-                })}
-            >
+            <form className='space-y-4' onSubmit={onSubmit}>
                 <TextField.Root>
                     <TextField.Input placeholder='Title' {...register("title")} />
                 </TextField.Root>
