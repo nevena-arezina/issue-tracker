@@ -8,7 +8,6 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
 
         <AlertDialog.Root>
             <AlertDialog.Trigger>
-
                 <Button color='red'>
                     <Pencil2Icon />
                     Delete Issue
