@@ -14,55 +14,61 @@ const links = [
 ]
 
 const Navbar = () => {
-    const currentPath = usePathname()
-    const { status, data: session } = useSession()
 
     return (
         <nav className='mb-5 flex space-x-6 border p-5 justify-between items-center'>
             <div className='flex items-center gap-5'>
                 <Link href="/"><AiFillBug /></Link>
-                <ul className='flex space-x-6'>
-                    {links.map(link =>
-                        <li key={link.href}>
-                            <Link
-                                href={link.href}
-                                className={classnames({
-                                    'text-zinc-900': link.href === currentPath,
-                                    'text-zinc-500': link.href !== currentPath,
-                                    'hover:text-zinc-800 transition-colors': true
-                                })}
-                            >
-                                {link.label}
-                            </Link>
-                        </li>)}
-                </ul>
+                <NavLinks />
             </div>
-
-            <div>
-                {status === "authenticated" && session?.user && (
-                    <DropdownMenu.Root>
-                        <DropdownMenu.Trigger>
-                            <button type="button" className="cursor-pointer bg-transparent border-none p-0">
-                                {session.user.image ? (
-                                    <Avatar src={session.user.image} fallback={session.user.name?.[0] || '?'} size="2" radius='full' />
-                                ) : (
-                                    <Avatar fallback={session.user.name?.[0] || '?'} size="2" radius='full' />
-                                )}
-                            </button>
-                        </DropdownMenu.Trigger>
-                        <DropdownMenu.Content>
-                            <DropdownMenu.Label><Text size="2">{session.user.email}</Text></DropdownMenu.Label>
-                            <DropdownMenu.Item>
-                                <Link href="/api/auth/signout">Log out</Link>
-                            </DropdownMenu.Item>
-                        </DropdownMenu.Content>
-                    </DropdownMenu.Root>
-                )}
-
-                {status === "unauthenticated" && <Link href="/api/auth/signin">Log in</Link>}
-            </div>
+            <AuthStatus />
         </nav>
     )
+}
+
+const NavLinks = () => {
+    const currentPath = usePathname()
+
+    return <ul className='flex space-x-6'>
+        {links.map(link =>
+            <li key={link.href}>
+                <Link
+                    href={link.href}
+                    className={classnames({
+                        'nav-link': true,
+                        '!text-zinc-900': link.href === currentPath,
+                    })}
+                >
+                    {link.label}
+                </Link>
+            </li>)}
+    </ul>
+}
+
+const AuthStatus = () => {
+    const { status, data: session } = useSession()
+
+    if (status === "loading") return null
+
+    if (status === 'unauthenticated') return <Link className='nav-link' href="/api/auth/signin">Log in</Link>
+
+    return <div>
+        {session?.user && (
+            <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                    <button type="button" className="cursor-pointer bg-transparent border-none p-0">
+                        <Avatar src={session.user!.image!} fallback={session.user.name?.[0] || '?'} size="2" radius='full' />
+                    </button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                    <DropdownMenu.Label><Text size="2">{session.user.email}</Text></DropdownMenu.Label>
+                    <DropdownMenu.Item>
+                        <Link href="/api/auth/signout">Log out</Link>
+                    </DropdownMenu.Item>
+                </DropdownMenu.Content>
+            </DropdownMenu.Root>
+        )}
+    </div>
 }
 
 export default Navbar
