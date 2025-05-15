@@ -5,6 +5,7 @@ import React from 'react'
 import { usePathname } from 'next/navigation'
 import { AiFillBug } from 'react-icons/ai'
 import classnames from 'classnames'
+import { useSession } from "next-auth/react"
 
 const links = [
     { href: '/', label: 'Dashboard' },
@@ -13,6 +14,7 @@ const links = [
 
 const Navbar = () => {
     const currentPath = usePathname()
+    const { status, data: session } = useSession()
 
     return (
         <nav className='mb-5 flex space-x-6 items-center h-14 border px-3'>
@@ -31,6 +33,10 @@ const Navbar = () => {
                             {link.label}
                         </Link>
                     </li>)}
+
+                <div>
+                    {status === "authenticated" ? <Link href="/api/auth/signout">Log out</Link> : <Link href="/api/auth/signin">Log in</Link>}
+                </div>
             </ul>
         </nav>
     )
