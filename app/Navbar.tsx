@@ -17,27 +17,31 @@ const Navbar = () => {
     const { status, data: session } = useSession()
 
     return (
-        <nav className='mb-5 flex space-x-6 items-center h-14 border px-3'>
-            <Link href="/"><AiFillBug /></Link>
-            <ul className='flex space-x-6'>
-                {links.map(link =>
-                    <li key={link.href}>
-                        <Link
-                            href={link.href}
-                            className={classnames({
-                                'text-zinc-900': link.href === currentPath,
-                                'text-zinc-500': link.href !== currentPath,
-                                'hover:text-zinc-800 transition-colors': true
-                            })}
-                        >
-                            {link.label}
-                        </Link>
-                    </li>)}
+        <nav className='mb-5 flex space-x-6 border p-5 justify-between items-center'>
+            <div className='flex items-center gap-5'>
+                <Link href="/"><AiFillBug /></Link>
+                <ul className='flex space-x-6'>
+                    {links.map(link =>
+                        <li key={link.href}>
+                            <Link
+                                href={link.href}
+                                className={classnames({
+                                    'text-zinc-900': link.href === currentPath,
+                                    'text-zinc-500': link.href !== currentPath,
+                                    'hover:text-zinc-800 transition-colors': true
+                                })}
+                            >
+                                {link.label}
+                            </Link>
+                        </li>)}
 
-                <div>
-                    {status === "authenticated" ? <Link href="/api/auth/signout">Log out</Link> : <Link href="/api/auth/signin">Log in</Link>}
-                </div>
-            </ul>
+
+                </ul>
+            </div>
+
+            <div>
+                {status === "authenticated" ? <Link href="/api/auth/signout">Log out</Link> : <Link href="/api/auth/signin">Log in</Link>}
+            </div>
         </nav>
     )
 }
