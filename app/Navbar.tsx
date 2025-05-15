@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { AiFillBug } from 'react-icons/ai'
 import classnames from 'classnames'
 import { useSession } from "next-auth/react"
+import { Avatar, DropdownMenu, Text } from '@radix-ui/themes'
 
 const links = [
     { href: '/', label: 'Dashboard' },
@@ -34,13 +35,31 @@ const Navbar = () => {
                                 {link.label}
                             </Link>
                         </li>)}
-
-
                 </ul>
             </div>
 
             <div>
-                {status === "authenticated" ? <Link href="/api/auth/signout">Log out</Link> : <Link href="/api/auth/signin">Log in</Link>}
+                {status === "authenticated" && session?.user && (
+                    <DropdownMenu.Root>
+                        <DropdownMenu.Trigger>
+                            <button type="button" className="cursor-pointer bg-transparent border-none p-0">
+                                {session.user.image ? (
+                                    <Avatar src={session.user.image} fallback={session.user.name?.[0] || '?'} size="2" radius='full' />
+                                ) : (
+                                    <Avatar fallback={session.user.name?.[0] || '?'} size="2" radius='full' />
+                                )}
+                            </button>
+                        </DropdownMenu.Trigger>
+                        <DropdownMenu.Content>
+                            <DropdownMenu.Label><Text size="2">{session.user.email}</Text></DropdownMenu.Label>
+                            <DropdownMenu.Item>
+                                <Link href="/api/auth/signout">Log out</Link>
+                            </DropdownMenu.Item>
+                        </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                )}
+
+                {status === "unauthenticated" && <Link href="/api/auth/signin">Log in</Link>}
             </div>
         </nav>
     )
