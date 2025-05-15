@@ -7,12 +7,11 @@ import { Issue } from "@prisma/client"
 import { Button, Callout, TextField } from '@radix-ui/themes'
 import axios from "axios"
 import "easymde/dist/easymde.min.css"
-import nextDynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
+import SimpleMDE from "react-simplemde-editor"
 import { z } from "zod"
-const SimpleMDE = nextDynamic(() => import("react-simplemde-editor"), { ssr: false })
 
 type IssueFormData = z.infer<typeof issueSchema>
 
