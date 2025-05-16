@@ -15,14 +15,11 @@ const IssueStatusFilter = () => {
     const searchParams = useSearchParams()
 
     const handleFilterSelect = (status: Status) => {
-        const params = new URLSearchParams()
-        if (status) params.append("status", status)
+        const params = new URLSearchParams(searchParams.toString())
 
-        const orderBy = searchParams.get("orderBy")
-        if (orderBy) params.append("orderBy", orderBy)
+        status ? params.set("status", status) : params.delete("status")
 
-        const query = params.size ? `?${params.toString()}` : ""
-        router.push(`/issues/${query}`)
+        router.push("?" + params.toString())
     }
 
     return (
