@@ -2,9 +2,18 @@ import { Link, StatusBadge } from '@/app/components'
 import { prisma } from '@/prisma/client'
 import { Table } from '@radix-ui/themes'
 import IssueActions from './IssueActions'
+import { Status } from '@prisma/client'
 
-const IssuesPage = async () => {
-    const issues = await prisma.issue.findMany()
+interface Params {
+    searchParams: {
+        status: Status
+    }
+}
+
+const IssuesPage = async ({ searchParams }: Params) => {
+    const validStatuses = Object.values(Status)
+    const status = validStatuses.includes(searchParams.status) ? searchParams.status : undefined
+    const issues = await prisma.issue.findMany({ where: { status } })
 
     return (
         <div className='cursor-default max-w-7xl'>
