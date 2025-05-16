@@ -1,13 +1,7 @@
-import Pagination from "./components/Pagination"
+import LatestIssues from "./LatestIssues"
 
-interface Params {
-    searchParams: {
-        page: string
-    }
-}
-
-export default function Home({ searchParams }: Params) {
+export default function Home() {
     return (
-        <div>hello</div>
+        <LatestIssues />
     )
 }
