@@ -3,6 +3,7 @@ import { Status } from '@prisma/client'
 import Pagination from '../components/Pagination'
 import IssueActions from './IssueActions'
 import IssueTable, { columnNames, IssueQuery } from './IssueTable'
+import { Metadata } from 'next'
 
 interface Params {
     searchParams: IssueQuery
@@ -34,6 +35,13 @@ const IssuesPage = async ({ searchParams }: Params) => {
             <Pagination itemsCount={issueCount} pageSize={pageSize} currentPage={currentPage} />
         </div>
     )
+}
+
+export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+    title: "Issue Tracker - Issue List",
+    description: "View all project issues"
 }
 
 export default IssuesPage
