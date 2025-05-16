@@ -17,7 +17,7 @@ export default async function Home() {
             </div>
 
             <div>
-                <LatestIssues />
+                {await LatestIssues()}
             </div>
         </div>
     )
